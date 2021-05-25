@@ -13,62 +13,36 @@ scoresheet = {
   '6': {'1': 0, '2': 0, '3': 600, '4': 1200,'5': 1800, '6': 2400},
   'special': {'straight': 1500, 'three pair': 1500}
 }
-class Banker:
-  def __init__(self):
-    self.balance = 0
-    self.shelved = 0
-
-  def shelf(self, num):
-    self.shelved += num
-
-  def bank(self):
-    deposit = self.shelved
-    self.balance += deposit
-    self.shelved = 0
-    return deposit
-
-  def clear_shelf(self):
-    self.shelved = 0
-    return self.shelved
 
 class GameLogic:
-  def roll_dice(dice):
-    total = []
-    while dice > 0:
-      roll = random.randint(1, 6)
-      total.append(roll)
-      dice -= 1
-    return total
+    def roll_dice(dice):
+        total = []
+        while dice > 0:
+            roll = random.randint(1, 6)
+            total.append(roll)
+            dice -= 1
+        return total
 
 
-  def calculate_score(dice):
-    counter = 0
-    occurrences = {}
-    for num in dice:
-      times_rolled = dice.count(num)
-      occurrences[num] = times_rolled
+    def calculate_score(dice):
+        counter = 0
+        occurrences = {}
+        for num in dice:
+            times_rolled = dice.count(num)
+            occurrences[num] = times_rolled
 
-    if sorted(dice) == [1,2,3,4,5,6]:
-      counter += scoresheet['special']['straight']
-      return counter
+        if sorted(dice) == [1,2,3,4,5,6]:
+            counter += scoresheet['special']['straight']
+            return counter
 
-    keys = list(occurrences.keys())
+        keys = list(occurrences.keys())
 
-    if len(keys) == 3:
-      if (occurrences[keys[0]] == 2) and (occurrences[keys[1]] == 2) and (occurrences[keys[2]] == 2):
-        counter += scoresheet['special']['three pair']
+        if len(keys) == 3:
+            if (occurrences[keys[0]] == 2) and (occurrences[keys[1]] == 2) and (occurrences[keys[2]] == 2):
+                counter += scoresheet['special']['three pair']
+                return counter
+
+        for num in occurrences:
+            counter += scoresheet[str(num)][str(occurrences[num])]
+    
         return counter
-
-    for num in occurrences:
-      counter += scoresheet[str(num)][str(occurrences[num])]
-    
-    return counter
-    
-
-    def roll_dice(number_of_rolls):
-        values = []
-        for i in range(number_of_rolls):
-            values.append(random.randint(1, 6))
-
-        return tuple(values)
-
