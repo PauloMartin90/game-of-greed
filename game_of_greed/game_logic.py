@@ -3,84 +3,72 @@ import random
 
 
 class GameLogic:
-    def __init__(self):
-        pass
+    import random
+scoresheet = {
+  '1': {'1': 100, '2': 200, '3': 1000, '4': 2000, '5': 3000, '6': 4000},
+  '2': {'1': 0, '2': 0, '3': 200, '4': 400, '5': 600, '6': 800},
+  '3': {'1': 0, '2': 0, '3': 300, '4': 600, '5': 900, '6': 1200},
+  '4': {'1': 0, '2': 0, '3': 400, '4': 800,'5': 1200, '6': 1600},
+  '5': {'1': 50, '2': 100, '3': 500, '4': 1000,'5': 1500, '6': 2000},
+  '6': {'1': 0, '2': 0, '3': 600, '4': 1200,'5': 1800, '6': 2400},
+  'special': {'straight': 1500, 'three pair': 1500}
+}
+class Banker:
+  def __init__(self):
+    self.balance = 0
+    self.shelved = 0
 
-    def calculate_score(roll):
-        score = 0
-        if (
-            roll.count(1)
-            == 1 & roll.count(2)
-            == 1 & roll.count(3)
-            == 1 & roll.count(4)
-            == 1 & roll.count(5)
-            == 1 & roll.count(6)
-            == 1
-        ):
-            score += 1500
-            return score
-        if roll.count(1) == 3:
-            score += 1000
-            for i in roll:
-                if i == 5:
-                    score += i * 10
-            return score
-        for i in roll:
-            if roll.count(i) == 6:
-                if i == 1:
-                    score += 4000
-                    return score
-                else:
-                    score += i * 100 * 4
-                    return score
-            if roll.count(i) == 5:
-                if i == 1:
-                    score += 3000
-                    if roll.count(5) == 1:
-                        score += 50
-                    return score
-                else:
-                    score += i * 100 * 3
-                    if roll.count(5) == 1:
-                        score += 50
-                    if roll.count(1) == 1:
-                        score += 100
-                    return score
-            if roll.count(i) == 4:
-                if i == 1:
-                    score += 2000
-                    return score
-                else:
-                    score += i * 100 * 2
-                    return score
-            if roll.count(i) == 3:
-                if i == 1:
-                    score += 1000
-                    return score
-                else:
-                    score += i * 100
-                    return score
-            # if roll.count(i) == 2 & len(roll.count() == 3):
-            #     score += 1500
-            #     return score
-            if i == 5:
-                score += i * 10
-            if i == 1:
-                score += i * 100
-        return score
+  def shelf(self, num):
+    self.shelved += num
+
+  def bank(self):
+    deposit = self.shelved
+    self.balance += deposit
+    self.shelved = 0
+    return deposit
+
+  def clear_shelf(self):
+    self.shelved = 0
+    return self.shelved
+
+class GameLogic:
+  def roll_dice(dice):
+    total = []
+    while dice > 0:
+      roll = random.randint(1, 6)
+      total.append(roll)
+      dice -= 1
+    return total
+
+
+  def calculate_score(dice):
+    counter = 0
+    occurrences = {}
+    for num in dice:
+      times_rolled = dice.count(num)
+      occurrences[num] = times_rolled
+
+    if sorted(dice) == [1,2,3,4,5,6]:
+      counter += scoresheet['special']['straight']
+      return counter
+
+    keys = list(occurrences.keys())
+
+    if len(keys) == 3:
+      if (occurrences[keys[0]] == 2) and (occurrences[keys[1]] == 2) and (occurrences[keys[2]] == 2):
+        counter += scoresheet['special']['three pair']
+        return counter
+
+    for num in occurrences:
+      counter += scoresheet[str(num)][str(occurrences[num])]
+    
+    return counter
+    
 
     def roll_dice(number_of_rolls):
         values = []
-        if number_of_rolls >= 1:
+        for i in range(number_of_rolls):
             values.append(random.randint(1, 6))
-            if number_of_rolls >= 2:
-                values.append(random.randint(1, 6))
-                if number_of_rolls >= 3:
-                    values.append(random.randint(1, 6))
-                    if number_of_rolls >= 4:
-                        values.append(random.randint(1, 6))
-                        if number_of_rolls >= 5:
-                            values.append(random.randint(1, 6))
-                            if number_of_rolls == 6:
-                                values.append(random.randint(1, 6))
-        return values
+
+        return tuple(values)
+
