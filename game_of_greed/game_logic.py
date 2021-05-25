@@ -22,7 +22,7 @@ class Banker:
     self.shelved += num
 
   def bank(self):
-    deposit = self.shelved
+    deposit = self.shelved # FIX FOR LATER
     self.balance += deposit
     self.shelved = 0
     return deposit
@@ -65,10 +65,10 @@ class GameLogic:
     return counter
     
 
-    def roll_dice(number_of_rolls):
-        values = []
-        for i in range(number_of_rolls):
-            values.append(random.randint(1, 6))
+  def roll_dice(number_of_rolls):
+    values = []
+    for i in range(number_of_rolls):
+      values.append(random.randint(1, 6))
 
-        return tuple(values)
+    return tuple(values)
 
