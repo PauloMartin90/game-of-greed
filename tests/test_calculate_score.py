@@ -1,8 +1,6 @@
 import pytest
 from game_of_greed.game_logic import GameLogic
 
-pytestmark = [pytest.mark.version_1]
-
 
 # @pytest.mark.skip()
 def test_single_five():
@@ -74,42 +72,42 @@ def test_straight():
     assert actual == expected
 
 
-@pytest.mark.skip()
+# @pytest.mark.skip()
 def test_three_of_a_kind():
     actual = GameLogic.calculate_score((2, 2, 2))
     expected = 200
     assert actual == expected
 
 
-@pytest.mark.skip()
+# @pytest.mark.skip()
 def test_four_of_a_kind():
     actual = GameLogic.calculate_score((2, 2, 2, 2))
     expected = 400
     assert actual == expected
 
 
-@pytest.mark.skip()
+# @pytest.mark.skip()
 def test_five_of_a_kind():
     actual = GameLogic.calculate_score((2, 2, 2, 2, 2))
     expected = 600
     assert actual == expected
 
 
-@pytest.mark.skip()
+# @pytest.mark.skip()
 def test_six_of_a_kind():
     actual = GameLogic.calculate_score((2, 2, 2, 2, 2, 2))
     expected = 800
     assert actual == expected
 
 
-@pytest.mark.skip()
+# @pytest.mark.skip()
 def test_six_ones():
     actual = GameLogic.calculate_score((1, 1, 1, 1, 1, 1))
     expected = 4000
     assert actual == expected
 
 
-@pytest.mark.skip()
+# @pytest.mark.skip()
 @pytest.mark.parametrize(
     "test_input,expected",
     [

@@ -8,8 +8,6 @@
 import pytest
 from game_of_greed.game_logic import GameLogic
 
-pytestmark = [pytest.mark.version_1]
-
 
 @pytest.mark.skip()
 def test_1_dice():
