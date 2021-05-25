@@ -1,4 +1,5 @@
 from collections import Counter
+import random
 
 
 class GameLogic:
@@ -67,3 +68,19 @@ class GameLogic:
             if i == 1:
                 score += i * 100
         return score
+
+    def roll_dice(number_of_rolls):
+        values = []
+        if number_of_rolls >= 1:
+            values.append(random.randint(1, 6))
+            if number_of_rolls >= 2:
+                values.append(random.randint(1, 6))
+                if number_of_rolls >= 3:
+                    values.append(random.randint(1, 6))
+                    if number_of_rolls >= 4:
+                        values.append(random.randint(1, 6))
+                        if number_of_rolls >= 5:
+                            values.append(random.randint(1, 6))
+                            if number_of_rolls == 6:
+                                values.append(random.randint(1, 6))
+        return values
