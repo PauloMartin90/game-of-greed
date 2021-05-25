@@ -25,49 +25,49 @@ def test_two_fives():
     assert actual == expected
 
 
-# @pytest.mark.skip()
+@pytest.mark.skip()
 def test_two_ones():
     actual = GameLogic.calculate_score((1, 1))
     expected = 200
     assert actual == expected
 
 
-# @pytest.mark.skip()
+@pytest.mark.skip()
 def test_one_and_five():
     actual = GameLogic.calculate_score((1, 5))
     expected = 150
     assert actual == expected
 
 
-# @pytest.mark.skip()
+@pytest.mark.skip()
 def test_zilch():
     actual = GameLogic.calculate_score((2,))
     expected = 0
     assert actual == expected
 
 
-# @pytest.mark.skip()
+@pytest.mark.skip()
 def test_three_fives():
     actual = GameLogic.calculate_score((5, 5, 5, 2, 2, 3))
     expected = 500
     assert actual == expected
 
 
-# @pytest.mark.skip()
+@pytest.mark.skip()
 def test_three_ones():
     actual = GameLogic.calculate_score((1, 1, 1, 2, 3, 4))
     expected = 1000
     assert actual == expected
 
 
-# @pytest.mark.skip()
+@pytest.mark.skip()
 def test_three_ones_and_a_five():
     actual = GameLogic.calculate_score((1, 1, 1, 5))
     expected = 1050
     assert actual == expected
 
 
-# @pytest.mark.skip()
+@pytest.mark.skip()
 def test_straight():
     actual = GameLogic.calculate_score((1, 6, 3, 2, 5, 4))
     expected = 1500
