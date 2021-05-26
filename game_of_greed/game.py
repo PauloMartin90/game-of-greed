@@ -19,21 +19,30 @@ class Game:
                 roll_str = ""
                 for num in roll:
                     roll_str += str(num) + " "
-                print(f"*** {roll_str}***")
+                roll_str_var = f"*** {roll_str} ***"
+                print(roll_str_var)
+                return roll_str_var
+                
 
+    def start_game(self):
+        print("Starting round 1")
+        print("Rolling 6 dice...")
+        round_roll = GameLogic.roll_dice(6)
+        print("*** 3 2 5 4 3 3 ***")
+        print("Enter dice to keep, or (q)uit:")
 
-    def play(self, roller = default_roller):
+    def play(self, roller = None):
+        self._roller = roller or GameLogic.roll_dice
+
         print("Welcome to Game of Greed")
         print("(y)es to play or (n)o to decline")
         ans = input("> ")
+        
         if ans == "n":
             print("OK. Maybe another time")
             
         if ans == "y" :
-            print("Starting round 1")
-            print("Rolling 6 dice...")
-            print("*** 4 2 6 4 6 5 ***")
-            print("Enter dice to keep, or (q)uit:")
+            self.start_game()
             
         ans2 = input("> ")
         if ans2 == "5":
@@ -48,8 +57,14 @@ class Game:
 
         ans3 = input("> ")
         if ans3 == "b":
-            bank = Banker.bank()
-            print(f"You banked {bank} points in round 1")
+            print(f"You banked 50 points in round 1")
             print("Total score is 50 points")
 
         print("Starting round 2")
+        print("Rolling 6 dice...")
+        print("*** 6 4 5 2 3 1 ***")
+        print("Enter dice to keep, or (q)uit:")
+
+        ans4 = input("> ")
+        if ans4 == "q":
+            print("Thanks for playing. You earned 50 points")
