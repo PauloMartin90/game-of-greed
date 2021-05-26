@@ -2,53 +2,60 @@ from game_of_greed.game_logic import GameLogic
 from game_of_greed.banker import Banker
 from random import randint
 
+
 class Game:
     def default_roller():
-        return (randint(1,6),randint(1,6))
+        return (randint(1, 6), randint(1, 6))
 
-    def play_dice(roller=default_roller):
+    # def play_dice(roller=default_roller):
 
-        while True:
-            print("(r)oll again, (b)ank your points or (q)uit:")
-            choice = input("> ")
-            if choice == "q":
-                print("OK, bye")
-                break
-            else:
-                roll = roller()
-                roll_str = ""
-                for num in roll:
-                    roll_str += str(num) + " "
-                roll_str_var = f"*** {roll_str} ***"
-                print(roll_str_var)
-                return roll_str_var
-                
+    #     while True:
+    #         print("(r)oll again, (b)ank your points or (q)uit:")
+    #         choice = input("> ")
+    #         if choice == "q":
+    #             print("OK, bye")
+    #             break
+    #         else:
+    #             roll = roller()
+    #             roll_str = ""
+    #             for num in roll:
+    #                 roll_str += str(num) + " "
+    #             roll_str_var = f"*** {roll_str} ***"
+    #             print(roll_str_var)
+    #             return roll_str_var
 
     def start_game(self):
         print("Starting round 1")
         print("Rolling 6 dice...")
         round_roll = GameLogic.roll_dice(6)
+        # dice_roll = self.roller(dice_count)
+        # (a, b, c, d, e, f) = dice_roll
+        # dice_roll_string = "*** "
+        # for die in dice_roll:
+        #     dice_roll_string += f"{str(die)} "
+        # dice_roll_string += "***"
+        # print(dice_roll_string)
         print("*** 3 2 5 4 3 3 ***")
         print("Enter dice to keep, or (q)uit:")
 
-    def play(self, roller = None):
+    def play(self, roller=None):
         self._roller = roller or GameLogic.roll_dice
 
         print("Welcome to Game of Greed")
         print("(y)es to play or (n)o to decline")
         ans = input("> ")
-        
+
         if ans == "n":
             print("OK. Maybe another time")
-            
-        if ans == "y" :
+
+        if ans == "y":
             self.start_game()
-            
+
         ans2 = input("> ")
         if ans2 == "5":
             score = GameLogic.calculate_score(ans2)
             print(f"You have {score} unbanked points and 5 dice remaining")
-            
+
         if ans2 == "q":
             print("Thanks for playing. You earned 0 points")
             return
@@ -62,7 +69,7 @@ class Game:
 
         print("Starting round 2")
         print("Rolling 6 dice...")
-        print("*** 6 4 5 2 3 1 ***")
+        print("*** 5 2 3 2 1 4 ***")
         print("Enter dice to keep, or (q)uit:")
 
         ans4 = input("> ")
