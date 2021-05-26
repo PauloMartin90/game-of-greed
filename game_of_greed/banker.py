@@ -12,8 +12,10 @@ class Banker:
         Returns:
             [int]
         """
+        amount_depo = self.shelved
         self.balance += self.shelved
         self.shelved = 0
+        return amount_depo
 
     def clear_shelf(self):
         self.shelved = 0
