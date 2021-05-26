@@ -7,6 +7,11 @@ class Banker:
         self.shelved = unbanked
 
     def bank(self):
+        """move points from shelf to bank, resetting shelf to 0
+
+        Returns:
+            [int]
+        """
         self.balance += self.shelved
         self.shelved = 0
 
