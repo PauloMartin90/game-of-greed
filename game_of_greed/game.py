@@ -1,3 +1,4 @@
+from typing import Counter
 from game_of_greed.game_logic import GameLogic
 from game_of_greed.banker import Banker
 from random import randint
@@ -11,6 +12,7 @@ class Game:
         self.round_num = 0
         self.roller = None
         self.done = False
+        self.cheater = False
 
     def play(self, roller=None):
         self.roller = roller or GameLogic.roll_dice
@@ -48,7 +50,9 @@ class Game:
         round_score = 0
         # loop here?
         while keep_rolling:
-            print(f"Rolling {num_dice} dice...")
+            if not self.cheater:
+                print(f"Rolling {num_dice} dice...")
+                self.cheater = False
             roll = self.roller(num_dice)
             roll_string = " ".join([str(i) for i in roll])
             print(f"*** {roll_string} ***")
@@ -56,29 +60,35 @@ class Game:
             # Changes for p
             ans2 = input("> ")
             if ans2.isnumeric():
-                # we need to make a keep rolling method
-                dice_values = tuple(int(num) for num in ans2)
+                if not Counter(ans2) - Counter(roll_string):
+                    # we need to make a keep rolling method
+                    dice_values = tuple(int(num) for num in ans2)
 
-                round_score += GameLogic.calculate_score(dice_values)
+                    round_score += GameLogic.calculate_score(dice_values)
 
-                self.banker.shelf(round_score)
-                num_dice -= len(ans2)
-                print(
-                    f"You have {self.banker.shelved} unbanked points and {num_dice} dice remaining"
-                )
+                    self.banker.shelf(round_score)
+                    num_dice -= len(ans2)
+                    print(
+                        f"You have {self.banker.shelved} unbanked points and {num_dice} dice remaining"
+                    )
+                    print("(r)oll again, (b)ank your points or (q)uit:")
+                else:
+                    self.cheater = True
+                    print("Cheater!!! Or possibly made a typo...")
 
             elif ans2 == "q":
                 self.quit_game()
-
-            print("(r)oll again, (b)ank your points or (q)uit:")
-
+            
+            # print("(r)oll again, (b)ank your points or (q)uit:")
+                
             ans3 = input("> ")
             if ans3 == "r":
-
+                if num_dice == 0:
+                    num_dice = 6
                 pass
-                # print(f"Rolling {num_dice} dice...")
-                # self.banker.shelf(score)
-                # self.play_round(self.round_num, num_dice)
+                    # print(f"Rolling {num_dice} dice...")
+                    # self.banker.shelf(score)
+                    # self.play_round(self.round_num, num_dice)
             if ans3 == "b":
                 round_points = self.banker.bank()
                 print(f"You banked {round_points} points in round {self.round_num}")
@@ -86,6 +96,8 @@ class Game:
 
             if ans3 == "q":
                 self.quit_game()
+            
+            
 
     def keep_rolling():
         pass
