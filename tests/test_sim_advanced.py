@@ -3,7 +3,7 @@ from tests.flo import diff
 from game_of_greed.game import Game
 
 
-@pytest.mark.skip()
+# @pytest.mark.skip()
 def test_repeat_roller():
     """Allow setting aside scoring dice and rolling the rest"""
     diffs = diff(Game().play, path="tests/version_3/repeat_roller.sim.txt")
