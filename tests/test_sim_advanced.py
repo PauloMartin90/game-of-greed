@@ -10,7 +10,7 @@ def test_repeat_roller():
     assert not diffs, diffs
 
 
-@pytest.mark.skip()
+# @pytest.mark.skip()
 def test_hot_dice():
     """When all dice are used without a zilch
     then user gets 6 fresh dice and continues turn.
