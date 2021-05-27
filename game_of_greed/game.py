@@ -37,7 +37,6 @@ class Game:
             print("OK. Maybe another time")
 
         elif start_game == "y":
-
             round = 1
             while not self.done:
                 self.play_round(round)
