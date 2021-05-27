@@ -53,7 +53,7 @@ class Game:
             roll_string = " ".join([str(i) for i in roll])
             print(f"*** {roll_string} ***")
             print("Enter dice to keep, or (q)uit:")
-
+            # Changes for p
             ans2 = input("> ")
             if ans2.isnumeric():
                 # we need to make a keep rolling method
