@@ -56,29 +56,8 @@ class Game:
             roll = self.roller(num_dice)
             roll_string = " ".join([str(i) for i in roll])
             print(f"*** {roll_string} ***")
-            print("Enter dice to keep, or (q)uit:")
-            # Changes for p
-            ans2 = input("> ")
-            if ans2.isnumeric():
-                if not Counter(ans2) - Counter(roll_string):
-                    # we need to make a keep rolling method
-                    dice_values = tuple(int(num) for num in ans2)
-
-                    round_score += GameLogic.calculate_score(dice_values)
-
-                    self.banker.shelf(round_score)
-                    num_dice -= len(ans2)
-                    print(
-                        f"You have {self.banker.shelved} unbanked points and {num_dice} dice remaining"
-                    )
-                    print("(r)oll again, (b)ank your points or (q)uit:")
-                else:
-                    self.cheater = True
-                    print("Cheater!!! Or possibly made a typo...")
-
-            elif ans2 == "q":
-                self.quit_game()
             
+            # self.handle_keepers(roll_string, round_score, num_dice)
             # print("(r)oll again, (b)ank your points or (q)uit:")
                 
             ans3 = input("> ")
@@ -97,10 +76,33 @@ class Game:
             if ans3 == "q":
                 self.quit_game()
             
-            
+    def handle_keepers(self, roll_string, round_score, num_dice):
+        print("Enter dice to keep, or (q)uit:")
+            # Changes for p
+        ans2 = input("> ")
 
-    def keep_rolling():
-        pass
+        if ans2 == "q":
+            self.quit_game()
+
+        while True:
+            # gather keepers
+            while not GameLogic.validate_keepers(roll_string, ans2):
+                # we need to make a keep rolling method
+                self.keep_rolling(ans2, round_score, num_dice)
+                print("(r)oll again, (b)ank your points or (q)uit:")
+            else:
+                self.cheater = True
+                print("Cheater!!! Or possibly made a typo...")
+
+
+    def keep_rolling(self, ans2, round_score, num_dice):
+        dice_values = tuple(int(num) for num in ans2)
+        round_score += GameLogic.calculate_score(dice_values)
+        self.banker.shelf(round_score)
+        num_dice -= len(ans2)
+        print(
+            f"You have {self.banker.shelved} unbanked points and {num_dice} dice remaining"
+        )
 
     def score_round(self, string):
         dice = []
@@ -113,3 +115,5 @@ class Game:
         result.append(GameLogic.calculate_score(dice))
 
         return result
+
+# acp
