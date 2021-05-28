@@ -6,4 +6,4 @@
 - Hunter Britten
 
 ## PR Link
-https://github.com/PauloMartin90/game-of-greed/pull/4
+https://github.com/PauloMartin90/game-of-greed/pull/14
