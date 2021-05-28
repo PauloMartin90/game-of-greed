@@ -57,7 +57,7 @@ class Game:
             roll_string = " ".join([str(i) for i in roll])
             print(f"*** {roll_string} ***")
             
-            self.handle_keepers(roll_string, round_score, num_dice)
+            # self.handle_keepers(roll_string, round_score, num_dice)
             # print("(r)oll again, (b)ank your points or (q)uit:")
                 
             ans3 = input("> ")
