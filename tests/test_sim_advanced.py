@@ -30,7 +30,7 @@ def test_cheat_and_fix():
     assert not diffs, diffs
 
 
-@pytest.mark.skip()
+# @pytest.mark.skip()
 def test_zilcher():
     """
     No scoring dice results in a 'zilch'
