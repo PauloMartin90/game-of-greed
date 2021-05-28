@@ -126,6 +126,8 @@ class Game:
             return True
         return False
 
+    # please recognize
+
     def calc_score(self, roll):
         dice_values = tuple(int(num) for num in roll)
         return GameLogic.calculate_score(dice_values)
