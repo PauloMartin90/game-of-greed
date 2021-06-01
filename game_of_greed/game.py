@@ -1,7 +1,9 @@
+from typing import Counter
 from game_of_greed.game_logic import GameLogic
 from game_of_greed.banker import Banker
 from random import randint
 import sys
+from collections import Counter
 
 
 class Game:
@@ -11,6 +13,7 @@ class Game:
         self.round_num = 0
         self.roller = None
         self.done = False
+        self.cheater = False
 
     def play(self, roller=None):
         self.roller = roller or GameLogic.roll_dice
@@ -48,24 +51,32 @@ class Game:
         round_score = 0
         # loop here?
         while keep_rolling:
-            print(f"Rolling {num_dice} dice...")
-            roll = self.roller(num_dice)
-            roll_string = " ".join([str(i) for i in roll])
+            if not self.cheater:
+                print(f"Rolling {num_dice} dice...")
+                roll = self.roller(num_dice)
+                roll_string = " ".join([str(i) for i in roll])
             print(f"*** {roll_string} ***")
             print("Enter dice to keep, or (q)uit:")
             # Changes for p
             ans2 = input("> ")
+            ans2 = ans2.replace(" ", "")
             if ans2.isnumeric():
-                # we need to make a keep rolling method
-                dice_values = tuple(int(num) for num in ans2)
+                if not Counter(ans2) - Counter(roll_string):
+                    dice_values = tuple(int(num) for num in ans2)
 
-                round_score += GameLogic.calculate_score(dice_values)
+                    round_score += GameLogic.calculate_score(dice_values)
 
-                self.banker.shelf(round_score)
-                num_dice -= len(ans2)
-                print(
-                    f"You have {self.banker.shelved} unbanked points and {num_dice} dice remaining"
-                )
+                    self.banker.shelf(round_score)
+                    num_dice -= len(ans2)
+                    print(
+                        f"You have {self.banker.shelved} unbanked points and {num_dice} dice remaining"
+                    )
+                else:
+                    self.cheater = True
+                    print("Cheater!!! Or possibly made a typo...")
+                    continue
+                if num_dice == 0:
+                    num_dice = 6
 
             elif ans2 == "q":
                 self.quit_game()
