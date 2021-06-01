@@ -14,6 +14,7 @@ class Game:
         self.roller = None
         self.done = False
         self.cheater = False
+        self.keep_rolling = True
 
     def play(self, roller=None):
         self.roller = roller or GameLogic.roll_dice
@@ -60,7 +61,9 @@ class Game:
             # Changes for p
             ans2 = input("> ")
             ans2 = ans2.replace(" ", "")
-            if ans2.isnumeric():
+            if ans2 == "q":
+                self.quit_game()
+            if ans2:
                 if not Counter(ans2) - Counter(roll_string):
                     dice_values = tuple(int(num) for num in ans2)
 
@@ -75,17 +78,13 @@ class Game:
                     self.cheater = True
                     print("Cheater!!! Or possibly made a typo...")
                     continue
-                if num_dice == 0:
-                    num_dice = 6
-
-            elif ans2 == "q":
-                self.quit_game()
-
+                
             print("(r)oll again, (b)ank your points or (q)uit:")
 
             ans3 = input("> ")
             if ans3 == "r":
-
+                if num_dice == 0:
+                    num_dice = 6
                 pass
                 # print(f"Rolling {num_dice} dice...")
                 # self.banker.shelf(score)
@@ -112,3 +111,16 @@ class Game:
         result.append(GameLogic.calculate_score(dice))
 
         return result
+    
+    def zilch(self, roll):
+        initial_score = self.calc_score(roll)
+        if initial_score == 0:
+            print(
+                """****************************************
+**        Zilch!!! Round over         **
+****************************************"""
+            )
+            self.banker.clear_shelf()
+            self.banking()
+            return True
+        return False
