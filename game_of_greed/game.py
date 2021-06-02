@@ -14,6 +14,7 @@ class Game:
         self.roller = None
         self.done = False
         self.cheater = False
+        self.keep_rolling = True
 
     def play(self, roller=None):
         self.roller = roller or GameLogic.roll_dice
@@ -46,59 +47,82 @@ class Game:
         sys.exit()
 
     def play_round(self, round_num, num_dice=6):
-        keep_rolling = True
+        self.keep_rolling = True
+
         print(f"Starting round {self.round_num}")
         round_score = 0
         # loop here?
-        while keep_rolling:
+        while self.keep_rolling:
             if not self.cheater:
                 print(f"Rolling {num_dice} dice...")
                 roll = self.roller(num_dice)
                 roll_string = " ".join([str(i) for i in roll])
             print(f"*** {roll_string} ***")
-            print("Enter dice to keep, or (q)uit:")
-            # Changes for p
-            ans2 = input("> ")
-            ans2 = ans2.replace(" ", "")
-            if ans2 == "q":
-                self.quit_game()
-            if ans2:
-                if not Counter(ans2) - Counter(roll_string):
-                    dice_values = tuple(int(num) for num in ans2)
+            dice_values = tuple(int(num) for num in roll_string.replace(" ",""))
+            if GameLogic.calculate_score(dice_values) > 0:
+                print("Enter dice to keep, or (q)uit:")
+                # Changes for p
+                ans2 = input("> ")
+                ans2 = ans2.replace(" ", "")
+                if ans2 == "q":
+                    self.quit_game()
+                if ans2:
+                    if not Counter(ans2) - Counter(roll_string):
+                        score_value = tuple(int(num) for num in ans2)
 
-                    round_score += GameLogic.calculate_score(dice_values)
+                        round_score += GameLogic.calculate_score(score_value)
 
-                    self.banker.shelf(round_score)
-                    num_dice -= len(ans2)
-                    print(
-                        f"You have {self.banker.shelved} unbanked points and {num_dice} dice remaining"
-                    )
-                else:
-                    self.cheater = True
-                    print("Cheater!!! Or possibly made a typo...")
+                        self.banker.shelf(round_score)
+                        num_dice -= len(ans2)
+                        print(
+                            f"You have {self.banker.shelved} unbanked points and {num_dice} dice remaining"
+                        )
+                    else:
+                        self.cheater = True
+                        print("Cheater!!! Or possibly made a typo...")
+                        continue
+                    
+                print("(r)oll again, (b)ank your points or (q)uit:")
+
+                ans3 = input("> ")
+                if num_dice == 0:
+                    num_dice = 6
+                if ans3 == "r":
                     continue
-                
-            print("(r)oll again, (b)ank your points or (q)uit:")
+                    
+                    # print(f"Rolling {num_dice} dice...")
+                    # self.banker.shelf(score)
+                    # self.play_round(self.round_num, num_dice)
+                if ans3 == "b":
+                    round_points = self.banker.bank()
+                    print(f"You banked {round_points} points in round {self.round_num}")
+                    self.keep_rolling = False
 
-            ans3 = input("> ")
-            if num_dice == 0:
-                num_dice = 6
-            if ans3 == "r":
-                pass
-                # print(f"Rolling {num_dice} dice...")
-                # self.banker.shelf(score)
-                # self.play_round(self.round_num, num_dice)
-            if ans3 == "b":
-                round_points = self.banker.bank()
-                print(f"You banked {round_points} points in round {self.round_num}")
-                keep_rolling = False
+                if ans3 == "q":
+                    self.quit_game()
+            else:
+                self.zilch(roll)
 
-            if ans3 == "q":
-                self.quit_game()
+    def banking(self):
+        round_points = self.banker.bank()
+        print(f"You banked {round_points} points in round {self.round_num}")
+        self.keep_rolling = False
 
-    def keep_rolling():
-        pass
+    def calc_score(self, roll):
+        dice_values = tuple(int(num) for num in roll)
+        return GameLogic.calculate_score(dice_values)
 
+    def zilch(self, roll):
+        initial_score = self.calc_score(roll)
+        if initial_score == 0:
+            print("****************************************")
+            print("**        Zilch!!! Round over         **")
+            print("****************************************")
+            self.banker.clear_shelf()
+            self.banking()
+            return True
+        return False
+        
     def score_round(self, string):
         dice = []
         for num in string:
